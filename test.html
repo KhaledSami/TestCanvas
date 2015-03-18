@@ -1,0 +1,100 @@
+<html>
+	<head>
+		<script src="jquery-1.11.2.min.js"></script>
+	</head>
+	<body>
+		<img id="1_jpg" width="200" height="200" src="imgs/1.jpg" hidden ='true'>
+		<img id="2_jpg" width="200" height="200" src="imgs/2.jpg" hidden ='true'>
+		<img id="3_jpg" width="200" height="200" src="imgs/3.jpg" hidden ='true'>
+		<img id="4_jpg" width="200" height="200" src="imgs/4.jpg" hidden ='true'>
+		<img id="5_jpg" width="200" height="200" src="imgs/5.jpg" hidden ='true'>
+		<img id="6_jpg" width="200" height="200" src="imgs/6.jpg" hidden ='true'>
+		<img id="7_jpg" width="200" height="200" src="imgs/7.jpg" hidden ='true'>
+		<img id="8_jpg" width="200" height="200" src="imgs/8.jpg" hidden ='true'>
+
+		<canvas width="1000" height="1000" style="border:1px solid black"></canvas>
+		<div id="debug"></div>
+		<script>
+		$("#debug").empty();
+		var ctx = $("canvas")[0].getContext("2d");
+		var w = $("canvas").width(), h = $("canvas").height();
+		
+		window.onload = function() {
+		var t0 = new Date().getTime();	
+		// testStroke();
+		// testDrawLine();
+		// testArcs();
+		// testDrawImages();
+		// buildPath2D();
+		testBezierCurve();
+		var t1 = new Date().getTime();	
+		// ctx.stroke();
+		var t2 = new Date().getTime();
+		$("#debug").append("<br><br>Time for build path: "+(t1-t0)/1000+"s<br><br>" + "<br><br>Time for stroke path: "+(t2-t1)/1000+"s<br><br>");	
+		}
+
+		function buildPath2D(){
+			ctx.beginPath();
+			ctx.moveTo(100,100);
+			for(var p =  0 ; p < 1000000 ; p++){
+				var x = Math.floor((Math.random() * 1000) + 1) ,y = Math.floor((Math.random() * 1000) + 1); 
+				ctx.lineTo(x,y);
+			}
+			ctx.closePath();
+		}
+
+		function testBezierCurve(){
+			for(var i = 0 ; i < 100000; i++){
+				ctx.moveTo(300, 300);
+				ctx.bezierCurveTo(300, 100, 200, 100, 200, 20);
+			}
+			ctx.stroke();
+
+		}
+		
+		function testDrawLine(){
+			ctx.lineJoin = "round";
+			ctx.strokeStyle = "blue";
+			ctx.beginPath();
+			for(var z = 0 ; z < 100; z ++) {
+				// ctx.clearRect(0,0,w,h);
+				
+				for(var i = 0; i < 10000; i++){
+					// ctx.beginPath();
+					ctx.moveTo(10,10);
+					ctx.lineTo(550,550);
+					ctx.lineTo(550,10);
+					ctx.lineTo(10,10);
+				}
+				// ctx.fill();
+				// ctx.stroke();
+			}
+		}
+
+		function testStroke(){
+			for(var i = 0 ; i < 100000000; i++){
+				ctx.stroke();
+			}
+		}
+
+		function testArcs(){
+			for(var i = 0 ; i < 10000 ; i++){
+				ctx.beginPath();
+				var x = Math.floor((Math.random() * 600) + 1) ,y = Math.floor((Math.random() * 600) + 1);
+				ctx.arc(x,y,50,0,2*Math.PI);
+				ctx.stroke();
+			}
+		}	
+		
+		function testDrawImages(){
+			for(var z = 0 ; z < 100000 ; z++) {
+				var id  = Math.floor((Math.random() * 8) + 1);
+				var img = document.getElementById(id +"_jpg");
+		      	var x = Math.floor((Math.random() * 500) + 1), y = Math.floor((Math.random() * 500) + 1);
+		        ctx.drawImage(img,x,y ,100,100);
+		     }
+		}
+
+		</script>
+	</body>
+</html>
